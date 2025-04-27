@@ -1,0 +1,82 @@
+// Products.jsx - Product List with Swiper Carousel
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import ProductItem from "./ProductItem";
+
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/navigation";
+import { Navigation } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
+
+const Products = () => {
+  const [products, setProducts] = useState([]);
+  const [isLoading, setLoading] = useState(true);
+
+  useEffect(() => {
+    axios
+      .get("http://127.0.0.1:8000/api/v1/products")
+      .then((res) => {
+        setProducts(res.data.results);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error(error);
+        setLoading(false);
+      });
+  }, []);
+
+  return (
+    <section className="mx-auto py-16 bg-gray-50">
+      <div className="container mx-auto px-4">
+        {/* Top Title + Button */}
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-10">
+          <h2 className="text-3xl md:text-4xl font-extrabold text-gray-800 text-center md:text-left">
+            Trending Products
+          </h2>
+          <a
+            href="#"
+            className="btn btn-secondary text-white text-sm font-medium rounded-lg"
+          >
+            View All
+          </a>
+        </div>
+
+        {/* Spinner  */}
+        {isLoading && (
+          <div className="flex justify-center items-center py-10">
+            <span className="loading loading-spinner loading-xl text-secondary"></span>
+          </div>
+        )}
+
+        {/* If No Products */}
+        {products.length === 0 ? (
+          <div className="text-center text-gray-600">No products found.</div>
+        ) : (
+          // Swiper Carousel
+          <Swiper
+            modules={[Navigation]}
+            spaceBetween={20}
+            slidesPerView={1}
+            breakpoints={{
+              640: { slidesPerView: 1, spaceBetween: 20 },
+              768: { slidesPerView: 2, spaceBetween: 30 },
+              1024: { slidesPerView: 3, spaceBetween: 40 },
+              1280: { slidesPerView: 4, spaceBetween: 50 },
+            }}
+            navigation
+            className="mt-4 px-4 container"
+          >
+            {products.map((product) => (
+              <SwiperSlide key={product.id} className="flex justify-center">
+                <ProductItem key={product.id} product={product} />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        )}
+      </div>
+    </section>
+  );
+};
+
+export default Products;
