@@ -1,5 +1,4 @@
 // Products.jsx - Product List with Swiper Carousel
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import ProductItem from "./ProductItem";
 
@@ -8,29 +7,34 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
+import ErrorAlart from "./ErrorAlart";
+import apiClient from "../../services/api-client";
 
 const Products = () => {
   const [products, setProducts] = useState([]);
   const [isLoading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    axios
-      .get("http://127.0.0.1:8000/api/v1/products")
+    apiClient
+      .get("/products/")
       .then((res) => {
         setProducts(res.data.results);
-        setLoading(false);
       })
       .catch((error) => {
-        console.error(error);
+        console.error(error.message);
+        setError(error.message);
+      })
+      .finally(() => {
         setLoading(false);
       });
   }, []);
 
   return (
-    <section className="mx-auto py-16 bg-gray-50">
+    <section className="mx-auto py-16 bg-gray-50 min-h-[700px]">
       <div className="container mx-auto px-4">
         {/* Top Title + Button */}
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-10">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-20">
           <h2 className="text-3xl md:text-4xl font-extrabold text-gray-800 text-center md:text-left">
             Trending Products
           </h2>
@@ -47,6 +51,11 @@ const Products = () => {
           <div className="flex justify-center items-center py-10">
             <span className="loading loading-spinner loading-xl text-secondary"></span>
           </div>
+        )}
+
+        {/* Error */}
+        {error && (
+          <ErrorAlart error={error} /> 
         )}
 
         {/* If No Products */}
