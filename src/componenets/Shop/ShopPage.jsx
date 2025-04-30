@@ -14,14 +14,18 @@ const ShopPage = () => {
     faceProducts()
   }, [currentPage]);
 
-  const faceProducts = () => {
-    apiClient.get(`/products/?page=${currentPage}`)
-    .then((res) => {
-        setProduct(res.data.results)
-        setTotalPages(Math.ceil(res.data.count / res.data.results.length))
-    })
-    .catch((error) => console.error(error.message))
-    .finally(() => setLoading(false));
+  const faceProducts = async() => {
+    try {
+      const response = await apiClient.get(`/products/?page=${currentPage}`)
+      console.log(response.data.results)
+      setProduct(response.data.results)
+      setTotalPages(Math.ceil(response.data.count / response.data.results.length))
+    } catch (error) {
+      console.error(error.message)
+    } finally {
+      setLoading(false)
+    } 
+    
   }
 
 
