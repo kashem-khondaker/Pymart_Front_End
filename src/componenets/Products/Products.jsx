@@ -31,7 +31,7 @@ const Products = () => {
   }, []);
 
   return (
-    <section className="mx-auto py-16 bg-gray-50 min-h-[700px]">
+    <section className="mx-auto py-16 bg-gray-100 min-h-[820px]">
       <div className="container mx-auto px-4">
         {/* Top Title + Button */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-20">
@@ -40,7 +40,7 @@ const Products = () => {
           </h2>
           <a
             href="#"
-            className="btn btn-secondary text-white text-sm font-medium rounded-lg"
+            className="btn btn-secondary px-6 py-6 rounded-full text-lg"
           >
             View All
           </a>

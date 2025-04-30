@@ -8,6 +8,8 @@ const CategoriesItems = ({index , category}) => {
     "from-pink-100 to-blue-100",
   ];
 
+  console.log(category)
+
   return (
     <div
       className={`rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer bg-gradient-to-br ${

@@ -7,7 +7,7 @@ const CarouselSlide = ({ title, subtitle, image }) => {
       className="w-full h-auto min-h-[500px] md:h-[650px] bg-cover bg-center flex justify-center items-center px-4 md:px-8 py-12"
       style={{ backgroundImage: `url(${banner_background})` }}
     >
-      <div className="max-w-6xl w-full flex flex-col-reverse md:flex-row justify-between items-center gap-8 md:gap-16">
+      <div className="container mx-auto px-4 flex flex-col-reverse md:flex-row justify-between items-center gap-8 md:gap-16">
         {/* Left */}
         <div className="w-full md:w-1/2 text-center md:text-left">
           <h1 className="text-3xl md:text-5xl font-bold text-gray-900">
