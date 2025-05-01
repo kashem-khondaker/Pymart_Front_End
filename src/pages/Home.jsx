@@ -1,14 +1,13 @@
-
-import Categoris from "../componenets/Categories/Categoris";
-import DiscountSection from "../componenets/Discount/DiscountSection";
-import Features from "../componenets/Features";
-import HeroCarousel from "../componenets/HeroCarousel";
+import HeroCaroucel from "../componenets/Home/Carousel/HeroCarousel";
+import Features from "../componenets/Home/Features";
+import Categoris from "../componenets/Home/Categories/Categoris";
 import Products from "../componenets/Products/Products";
+import DiscountSection from "../componenets/Home/Discount/DiscountSection";
 
 const Home = () => {
   return (
     <div>
-      <HeroCarousel />
+      <HeroCaroucel />
       <Features />
       <Categoris />
       <Products />

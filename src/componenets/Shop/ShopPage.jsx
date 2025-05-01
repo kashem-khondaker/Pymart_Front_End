@@ -1,38 +1,56 @@
-import React, { useEffect, useState } from "react";
-import apiClient from "../../services/api-client";
-import ProductItem from "../Products/ProductItem";
+import React, { useState } from "react";
+
 import ShopList from "./ShopList";
 import ShopPagination from "./ShopPagination";
+import useFetchProducts from "../../hooks/useFetchProducts";
+import FilterSection from "./FilterSection";
+import useFetchCategory from "../../hooks/useFetchCategory";
 
 const ShopPage = () => {
-  const [products, setProduct] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [totalPages , setTotalPages] = useState(0);
-    const [currentPage , setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [priceRange, setPriceRange] = useState([0, 1000]);
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [orderingQuery, setOrderingQuery] = useState("");
 
-  useEffect(() => {
-    faceProducts()
-  }, [currentPage]);
+  const { products, loading, totalPages } = useFetchProducts(
+    currentPage,
+    priceRange,
+    selectedCategory,
+    searchQuery,
+    orderingQuery
+  );
 
-  const faceProducts = async() => {
-    try {
-      const response = await apiClient.get(`/products/?page=${currentPage}`)
-      console.log(response.data.results)
-      setProduct(response.data.results)
-      setTotalPages(Math.ceil(response.data.count / response.data.results.length))
-    } catch (error) {
-      console.error(error.message)
-    } finally {
-      setLoading(false)
-    } 
-    
-  }
+  const categories = useFetchCategory();
 
+  const handlePriceChange = (index, value) => {
+    setPriceRange((prev) => {
+      const newPriceRange = [...prev];
+      newPriceRange[index] = value;
+      return newPriceRange;
+    });
+    setCurrentPage(1);
+  };
 
   return (
     <div>
-      <ShopList products={products} loading={loading}/>
-      <ShopPagination totalPages={totalPages} currentPage={currentPage} handlePageChange={setCurrentPage}/>
+      <FilterSection
+        priceRange={priceRange}
+        handlePriceChange={handlePriceChange}
+        categories={categories}
+        selectedCategory={selectedCategory}
+        setSelectedCategory={setSelectedCategory}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        orderingQuery={orderingQuery}
+        setOrderingQuery={setOrderingQuery}
+      />
+      <ShopList products={products} loading={loading} />
+      <ShopPagination
+        totalPages={totalPages}
+        currentPage={currentPage}
+        handlePageChange={setCurrentPage}
+      />
     </div>
   );
 };

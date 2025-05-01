@@ -1,5 +1,5 @@
 import { Swiper, SwiperSlide } from "swiper/react";
-import CarouselSlide from "./Carousel/CarouselSlide";
+import CarouselSlide from "./CarouselSlide";
 
 // Import Swiper styles
 import "swiper/css";
@@ -8,9 +8,9 @@ import "swiper/css/navigation";
 
 // import required modules
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
-import book from "../assets/images/book.png";
-import fashion from "../assets/images/fashion.png";
-import technology from "../assets/images/technology.png";
+import book from "../../../assets/images/book.png";
+import fashion from "../../../assets/images/fashion.png";
+import technology from "../../../assets/images/technology.png";
 
 const HeroCarousel = () => {
   const slides = [

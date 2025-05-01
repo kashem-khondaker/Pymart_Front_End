@@ -1,5 +1,5 @@
 import React from "react";
-import banner_background from "../../assets/images/banner-image-bg.jpg";
+import banner_background from "../../../assets/images/banner-image-bg.jpg";
 
 const CarouselSlide = ({ title, subtitle, image }) => {
   return (

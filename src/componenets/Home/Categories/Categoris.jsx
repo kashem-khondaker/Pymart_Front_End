@@ -1,6 +1,6 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import apiClient from "../../services/api-client";
+import apiClient from "../../../services/api-client";
 import CategoriesItems from "./CategoriesItems";
 
 const Categoris = () => {
