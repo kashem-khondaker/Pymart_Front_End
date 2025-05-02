@@ -31,7 +31,7 @@ const useFetchProducts = (
     };
 
     fetchProducts();
-  }, [currentPage, priceRange, selectedCategory, searchQuery,orderingQuery]);
+  }, [currentPage, priceRange, selectedCategory, searchQuery, orderingQuery]);
 
   return { products, loading, totalPages };
 };

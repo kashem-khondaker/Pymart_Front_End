@@ -9,8 +9,7 @@ const FilterSection = ({
   searchQuery,
   setSearchQuery,
   orderingQuery,
-  setOrderingQuery
-
+  setOrderingQuery,
 }) => {
   return (
     <div className="container mx-auto px-4 py-8">
@@ -88,33 +87,33 @@ const FilterSection = ({
 
         {/* Search */}
         <div className="bg-white p-4 rounded-lg shadow">
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          Search
-        </label>
-        <input
-          type="text"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Search books..."
-          className="w-full p-2 border rounded-md"
-        />
-      </div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Search
+          </label>
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search books..."
+            className="w-full p-2 border rounded-md"
+          />
+        </div>
 
         {/* Sorting  */}
         <div className="bg-white p-4 rounded-lg shadow">
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          Sort By Price
-        </label>
-        <select
-          className="w-full p-2 border rounded-md"
-          value={orderingQuery}
-          onChange={(e) => setOrderingQuery(e.target.value)}
-        >
-          <option value="">Default</option>
-          <option value="price">Price: Low to High</option>
-          <option value="-price">Price: High to Low</option>
-        </select>
-      </div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Sort By Price
+          </label>
+          <select
+            className="w-full p-2 border rounded-md"
+            value={orderingQuery}
+            onChange={(e) => setOrderingQuery(e.target.value)}
+          >
+            <option value="">Default</option>
+            <option value="price">Price: Low to High</option>
+            <option value="-price">Price: High to Low</option>
+          </select>
+        </div>
       </div>
     </div>
   );
