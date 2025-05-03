@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import useAuthContext from "../hooks/useAuthContext";
 import ErrorAlart from "../componenets/Products/ErrorAlart";
 
 const Register = () => {
-  const { registerUser , errorMsg } = useAuthContext();
+  const { registerUser, errorMsg } = useAuthContext();
+  const [ successMsg, setSuccessMsg ] = useState("");
+
   const {
     register,
     handleSubmit,
@@ -14,9 +16,12 @@ const Register = () => {
   const onSubmit = async (data) => {
     delete data.confirm_password;
     try {
-      await registerUser(data);
+      const response = await registerUser(data);
+      if (response.success) {
+        setSuccessMsg(response.message);
+      }
     } catch (error) {
-      console.log( "registration error ",error);
+      console.log("registration error ", error);
     }
   };
 
@@ -26,12 +31,18 @@ const Register = () => {
         onSubmit={handleSubmit(onSubmit)}
         className="w-full max-w-md p-8 bg-white rounded-xl shadow-sm space-y-6 border border-gray-100"
       >
+        {successMsg && (
+            <div role="alert" className="alert alert-success">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span> {successMsg} </span>
+          </div>
+        )}
         <div className="text-center space-y-2">
           <h2 className="text-3xl font-bold text-gray-800">Create Account</h2>
         </div>
-        <div>
-            {errorMsg && <ErrorAlart error={errorMsg} />}
-        </div>
+        <div>{errorMsg && <ErrorAlart error={errorMsg} />}</div>
 
         <div className="space-y-4">
           {/* Email */}

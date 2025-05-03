@@ -7,18 +7,18 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Dashboard from "../pages/Dashboard";
 import PrivateRoute from "../componenets/PrivateRoute";
+import ActivateAccount from "../componenets/Registrations/ActivateAccount";
 
 const AppRoutes = () => {
   return (
     <Routes>
-      {/* <Route index element={ <Home />} />
-        <Route path="about" element={ <About />} /> */}
       <Route element={<MainLayout />}>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/shop" element={<Shop />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/activate/:uid/:token" element={<ActivateAccount />} />
         <Route
           path="/dashboard"
           element={

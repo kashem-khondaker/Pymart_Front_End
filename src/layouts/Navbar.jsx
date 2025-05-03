@@ -3,8 +3,8 @@ import { Link, NavLink } from "react-router";
 import useAuthContext from "../hooks/useAuthContext";
 
 const Navbar = () => {
-  const { user } = useAuthContext();
-  console.log("From navbar :" , user);
+  const { user , logoutUser } = useAuthContext();
+  // console.log("From navbar :" , user);
   return (
     <div className="navbar bg-base-100 container mx-auto">
       <div className="navbar-start">
@@ -144,7 +144,7 @@ const Navbar = () => {
                   <a>Settings</a>
                 </li>
                 <li>
-                  <a>Logout</a>
+                  <a onClick={logoutUser}>Logout</a>
                 </li>
               </ul>
             </div>
