@@ -1,23 +1,32 @@
-import AuthContext from "../context/AuthContext";
+import { useNavigate } from "react-router";
+import ErrorAlart from "../componenets/Products/ErrorAlart.jsx";
 import useAuthContext from "../hooks/useAuthContext.js";
 import { useForm } from "react-hook-form";
 
 const Login = () => {
-  const {user , loginUser } = useAuthContext();
+  const { user, errorMsg, loginUser } = useAuthContext();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
+  const navigate = useNavigate();
+
   const onSubmit = async (data) => {
-    console.log(data);
-    await loginUser(data);
-  }
+    try {
+      console.log(data);
+      await loginUser(data);
+      navigate("/dashboard");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-200">
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8">
+        {errorMsg && <ErrorAlart error={errorMsg} />}
         <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
           Welcome Back 👋
         </h2>
