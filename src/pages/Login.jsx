@@ -2,9 +2,11 @@ import { useNavigate } from "react-router";
 import ErrorAlart from "../componenets/Products/ErrorAlart.jsx";
 import useAuthContext from "../hooks/useAuthContext.js";
 import { useForm } from "react-hook-form";
+import { useState } from "react";
 
 const Login = () => {
-  const { user, errorMsg, loginUser } = useAuthContext();
+  const { errorMsg, loginUser } = useAuthContext();
+  const [loading, setLoading] = useState(false);
   const {
     register,
     handleSubmit,
@@ -14,12 +16,15 @@ const Login = () => {
   const navigate = useNavigate();
 
   const onSubmit = async (data) => {
+    setLoading(true);
     try {
       console.log(data);
       await loginUser(data);
       navigate("/dashboard");
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -87,8 +92,9 @@ const Login = () => {
           <button
             type="submit"
             className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-xl transition duration-200"
+            disabled={loading}
           >
-            Login
+            {loading ? "Logging in..." : " Login"}
           </button>
         </form>
         <p className="mt-6 text-center text-sm text-gray-600">

@@ -4,6 +4,7 @@ import apiClient from "../services/api-client";
 const useAuth = () => {
   const [user, setUser] = useState(null);
   const [errorMsg, setErrorMsg] = useState("");
+  
 
   const getToken = () => {
     const token = localStorage.getItem("authTokens");
@@ -63,7 +64,21 @@ const useAuth = () => {
     }
   }, [errorMsg]);
 
-  return { user, errorMsg, loginUser };
+  // register user 
+  const registerUser = async (userData) => {
+    console.log(userData);
+    setErrorMsg(""); // clear previous errors
+    try {
+      const response = await apiClient.post("auth/users/", userData);
+      console.log("Registration successful:", response.data);
+    } catch (error) {
+      const msg = Object.values( error?.response?.data).flat().join("\n") || "Registration failed";
+      console.error("Registration error:", msg);
+      setErrorMsg(msg);
+    }
+  };
+
+  return { user, errorMsg, loginUser , registerUser };
 };
 
 export default useAuth;
