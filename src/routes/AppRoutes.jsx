@@ -8,10 +8,13 @@ import Register from "../pages/Register";
 import Dashboard from "../pages/Dashboard";
 import PrivateRoute from "../componenets/PrivateRoute";
 import ActivateAccount from "../componenets/Registrations/ActivateAccount";
+import DashboardLayout from "../layouts/DashboardLayout";
+import Profile from "../pages/Profile";
 
 const AppRoutes = () => {
   return (
     <Routes>
+      {/* Public routes */}
       <Route element={<MainLayout />}>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
@@ -19,15 +22,19 @@ const AppRoutes = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/activate/:uid/:token" element={<ActivateAccount />} />
-        <Route
-          path="/dashboard"
-          element={
-            <PrivateRoute>
-              {" "}
-              <Dashboard />
-            </PrivateRoute>
-          }
-        />
+      </Route>
+
+      {/* Private routes */}
+      <Route
+      path="/dashboard"
+        element={
+          <PrivateRoute>
+            <DashboardLayout />
+          </PrivateRoute>
+        }
+      >
+        <Route index element={<Dashboard />} />
+        <Route path="profile" element={<Profile />} />
       </Route>
     </Routes>
   );

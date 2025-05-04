@@ -26,10 +26,10 @@ const Register = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+    <div className="flex justify-center items-center min-h-screen bg-gray-200 ">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="w-full max-w-md p-8 bg-white rounded-xl shadow-sm space-y-6 border border-gray-100"
+        className="w-full max-w-md p-8 bg-gray-50 rounded-2xl shadow-xl space-y-6 border border-gray-100 "
       >
         {successMsg && (
             <div role="alert" className="alert alert-success">

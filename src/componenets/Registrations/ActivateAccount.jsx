@@ -12,7 +12,7 @@ const ActivateAccount = () => {
   useEffect(() => {
     apiClient
       .post(`auth/users/activation/`, { uid, token })
-      .then((res) => {
+      .then(() => {
         setMessage("Account Activated");
         setTimeout(() => {
           navigate("/login"), 3000;
