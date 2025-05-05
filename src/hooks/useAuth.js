@@ -4,7 +4,6 @@ import apiClient from "../services/api-client";
 const useAuth = () => {
   const [user, setUser] = useState(null);
   const [errorMsg, setErrorMsg] = useState("");
-  
 
   const getToken = () => {
     const token = localStorage.getItem("authTokens");
@@ -16,6 +15,13 @@ const useAuth = () => {
   // ✅ useRef to avoid duplicate fetch
   const hasFetched = useRef(false);
 
+  // error handler
+  const errorHandler = (error, defaultMsg = "Something went wrong") => {
+    const msg = error.response?.data?.detail || defaultMsg;
+    console.error("Error:", msg);
+    setErrorMsg(msg);
+  };
+
   // fetch user details
   const fetchUserProfile = async () => {
     try {
@@ -25,9 +31,46 @@ const useAuth = () => {
         },
       });
       setUser(response.data);
-      console.log("User profile fetched:", response.data);
     } catch (error) {
-      console.error("User profile fetch error:", error);
+      return errorHandler(error , "User profile fetch error");
+    }
+  };
+
+  // update user profile
+  const updateUserProfile = async (userData) => {
+    setErrorMsg(""); // clear previous errors
+    try {
+      const response = await apiClient.put("/auth/users/me/", userData, {
+        headers: {
+          Authorization: `JWT ${authTokens?.access}`,
+        },
+      });
+      // setUser(response.data);
+      console.log("User profile updated:", response.data);
+    } catch (error) {
+      return errorHandler(error, "User profile update failed !");
+    }
+  };
+
+  // password change
+  const changePassword = async (userData) => {
+    setErrorMsg(""); // clear previous errors
+    try {
+      const response = await apiClient.post(
+        "/auth/users/set_password/",
+        userData,
+        {
+          headers: {
+            Authorization: `JWT ${authTokens?.access}`,
+          },
+        }
+      );
+      console.log("Password changed:", response.data);
+    } catch (error) {
+      const msg = error.response?.data?.current_password[0] || "Password change failed !";
+      console.error("Error:", msg);
+      setErrorMsg(msg);
+      return errorHandler(error);
     }
   };
 
@@ -43,9 +86,7 @@ const useAuth = () => {
       await fetchUserProfile();
       hasFetched.current = true;
     } catch (error) {
-      const msg = error.response?.data?.detail || "Login failed";
-      console.error("Login error:", msg);
-      setErrorMsg(msg);
+      return errorHandler(error);
     }
   };
 
@@ -64,30 +105,44 @@ const useAuth = () => {
     }
   }, [errorMsg]);
 
-  // register user 
+  // register user
   const registerUser = async (userData) => {
     console.log(userData);
     setErrorMsg(""); // clear previous errors
     try {
       const response = await apiClient.post("auth/users/", userData);
       console.log("Registration successful:", response.data);
-      return { success : true  , message: "Registration successful . You have been sent an activation email ." };
+      return {
+        success: true,
+        message:
+          "Registration successful . You have been sent an activation email .",
+      };
     } catch (error) {
-      const msg = Object.values( error?.response?.data).flat().join("\n") || "Registration failed";
+      const msg =
+        Object.values(error?.response?.data).flat().join("\n") ||
+        "Registration failed";
       console.error("Registration error:", msg);
       setErrorMsg(msg);
-      return { success : false  , message: msg };
+      return { success: false, message: msg };
     }
   };
 
-  // logout user 
+  // logout user
   const logoutUser = () => {
     setAuthTokens(null);
     setUser(null);
     localStorage.removeItem("authTokens");
   };
 
-  return { user, errorMsg, loginUser , registerUser , logoutUser };
+  return {
+    user,
+    errorMsg,
+    loginUser,
+    registerUser,
+    logoutUser,
+    updateUserProfile,
+    changePassword,
+  };
 };
 
 export default useAuth;

@@ -4,18 +4,21 @@ import { useForm } from "react-hook-form";
 import ProfileButton from "../componenets/DashboardCom/Profile/ProfileButton";
 import PasswordChange from "../componenets/DashboardCom/Profile/PasswordChange";
 import useAuthContext from "../hooks/useAuthContext";
+import ErrorAlart from "../componenets/Products/ErrorAlart";
 
 const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
 
   const {
     register,
+    handleSubmit,
     watch,
     setValue, // ✅ include setValue to use it in useEffect
     formState: { errors },
   } = useForm();
 
-  const { user } = useAuthContext();
+  const { user, updateUserProfile, changePassword, errorMsg } =
+    useAuthContext();
 
   useEffect(() => {
     if (user) {
@@ -29,12 +32,44 @@ const Profile = () => {
     }
   }, [user, setValue]);
 
+  const onSubmit = async (data) => {
+    try {
+      const profilePayload = {
+        first_name: data.first_name,
+        last_name: data.last_name,
+        address: data.address,
+        phone: data.phone,
+      };
+
+      console.log(profilePayload);
+      await updateUserProfile(profilePayload);
+      alert("Profile updated successfully");
+
+      // password change
+      if (data.current_password && data.new_password) {
+        const passwordPayload = {
+          new_password: data.new_password,
+          current_password: data.current_password,
+        };
+        console.log(passwordPayload);
+        console.log(data);
+        await changePassword(passwordPayload);
+        alert("Password updated successfully");
+      }
+
+      setIsEditing(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="card w-full max-w-2xl bg-base-100 shadow-xl">
       <div className="card-body">
+        {errorMsg && <ErrorAlart error={errorMsg} />}
         <h2 className="card-title text-2xl m-4">Profile</h2>
 
-        <form onSubmit={(e) => e.preventDefault()}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <ProfileForm
             register={register}
             errors={errors}

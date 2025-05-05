@@ -5,7 +5,8 @@ const ProfileButton = ({ isEditing, setIsEditing }) => {
     <div className="flex justify-center pt-4">
       {isEditing ? (
         <div className="flex justify-center items-center gap-4 ">
-          <button className="btn btn-primary mr-2">Save changes</button>
+          <button
+          type="submit" className="btn btn-primary mr-2">Save changes</button>
           <button
             className="btn btn-primary mr-2"
             onClick={() => setIsEditing(false)}
@@ -15,6 +16,7 @@ const ProfileButton = ({ isEditing, setIsEditing }) => {
         </div>
       ) : (
         <button
+          type="submit"
           className="btn btn-primary mr-2"
           onClick={() => setIsEditing(true)}
         >
