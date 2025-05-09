@@ -32,7 +32,7 @@ const useAuth = () => {
       });
       setUser(response.data);
     } catch (error) {
-      return errorHandler(error , "User profile fetch error");
+      return errorHandler(error, "User profile fetch error");
     }
   };
 
@@ -67,7 +67,8 @@ const useAuth = () => {
       );
       console.log("Password changed:", response.data);
     } catch (error) {
-      const msg = error.response?.data?.current_password[0] || "Password change failed !";
+      const msg =
+        error.response?.data?.current_password[0] || "Password change failed !";
       console.error("Error:", msg);
       setErrorMsg(msg);
       return errorHandler(error);
@@ -127,6 +128,81 @@ const useAuth = () => {
     }
   };
 
+  // resend email activation
+  const resendEmailActivation = async ({ email }) => {
+    setErrorMsg(""); // clear previous errors
+    try {
+      const response = await apiClient.post("auth/users/resend_activation/", {
+        email,
+      });
+      console.log("Email activation resent:", response.data);
+      return {
+        success: true,
+        message:
+          "Email activation resent . You have been sent an activation email .",
+      };
+    } catch (error) {
+      const msg =
+        Object.values(error?.response?.data).flat().join("\n") ||
+        "Email activation resend failed";
+      console.error("Email activation resend error:", msg);
+      setErrorMsg(msg);
+      return { success: false, message: msg };
+    }
+  };
+
+  // forgot password
+  const forgotPassword = async ({ email }) => {
+    setErrorMsg(""); // clear previous errors
+    try {
+      const response = await apiClient.post("/auth/users/reset_password/", {
+        email,
+      });
+      console.log("Forgot password email sent:", response.data);
+      return {
+        success: true,
+        message:
+          "Email activation resent . You have been sent an email to change your password .",
+      };
+    } catch (error) {
+      console.log(error);
+      errorHandler(error);
+    }
+  };
+
+  // reset password
+
+  const resetPassword = async ({ email }) => {
+    setErrorMsg("");
+    try {
+      const response = await apiClient.post("/auth/users/reset_password/", {
+        email,
+      });
+      console.log("Reset email sent:", response.data);
+    } catch (error) {
+      console.log(error);
+      errorHandler(error);
+    }
+  };
+
+  // password reset confirm
+  const resetPasswordConfirm = async ({ uid, token, new_password }) => {
+    setErrorMsg("");
+    try {
+      const response = await apiClient.post(
+        "/auth/users/reset_password_confirm/",
+        { uid, token, new_password }
+      );
+      console.log("password reset successfully", response.data);
+      return response.data; // রিটার্ন রেসপন্স ডাটা
+    } catch (error) {
+      console.log(error);
+      errorHandler(error);
+      return { success: false, message: "Failed to reset password" }; // যদি ত্রুটি ঘটে
+    }
+  };
+  
+
   // logout user
   const logoutUser = () => {
     setAuthTokens(null);
@@ -142,6 +218,10 @@ const useAuth = () => {
     logoutUser,
     updateUserProfile,
     changePassword,
+    resendEmailActivation,
+    forgotPassword,
+    resetPassword,
+    resetPasswordConfirm,
   };
 };
 

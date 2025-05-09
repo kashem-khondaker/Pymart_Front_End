@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router-dom";
 import ErrorAlart from "../componenets/Products/ErrorAlart.jsx";
 import useAuthContext from "../hooks/useAuthContext.js";
 import { useForm } from "react-hook-form";
@@ -47,11 +47,9 @@ const Login = () => {
               {...register("email", { required: "Email is required" })}
               className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400"
             />
-
             {errors.email && (
               <p className="text-red-500 text-sm mt-1">
-                {" "}
-                {errors.email.message}{" "}
+                {errors.email.message}
               </p>
             )}
           </div>
@@ -85,10 +83,17 @@ const Login = () => {
                 Remember me
               </label>
             </div>
-            <a href="#" className="text-indigo-600 hover:underline">
-              Forgot password?
-            </a>
+            {/* Password Reset Link - Here */}
+            <div className="text-center mt-4">
+              <Link
+                to="/reset-password"
+                className="text-indigo-600 hover:underline"
+              >
+                Forgot password?
+              </Link>
+            </div>
           </div>
+
           <button
             type="submit"
             className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-xl transition duration-200"
@@ -99,9 +104,12 @@ const Login = () => {
         </form>
         <p className="mt-6 text-center text-sm text-gray-600">
           Don't have an account?{" "}
-          <a href="#" className="text-indigo-600 hover:underline font-medium">
+          <Link
+            to="/register"
+            className="text-indigo-600 hover:underline font-medium"
+          >
             Sign up
-          </a>
+          </Link>
         </p>
       </div>
     </div>

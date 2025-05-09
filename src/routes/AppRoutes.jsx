@@ -10,6 +10,10 @@ import PrivateRoute from "../componenets/PrivateRoute";
 import ActivateAccount from "../componenets/Registrations/ActivateAccount";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Profile from "../pages/Profile";
+import ResendActivationEmail from "../pages/ResendActivationEmail ";
+import ForgotPassword from "../pages/ForgotPassword";
+import ResetPassword from "../pages/ResetPassword";
+import ResendPasswordActivation from "../pages/ResendPasswordActivation";
 
 const AppRoutes = () => {
   return (
@@ -22,11 +26,18 @@ const AppRoutes = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/activate/:uid/:token" element={<ActivateAccount />} />
+        <Route path="/resend-activation" element={<ResendActivationEmail />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route
+          path="/password/reset/confirm/:uid/:token"
+          element={<ResendPasswordActivation />}
+        />
       </Route>
 
       {/* Private routes */}
       <Route
-      path="/dashboard"
+        path="/dashboard"
         element={
           <PrivateRoute>
             <DashboardLayout />

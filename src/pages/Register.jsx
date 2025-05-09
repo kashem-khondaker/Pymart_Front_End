@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import useAuthContext from "../hooks/useAuthContext";
 import ErrorAlart from "../componenets/Products/ErrorAlart";
+import { Link } from "react-router";
 
 const Register = () => {
   const { registerUser, errorMsg } = useAuthContext();
@@ -189,9 +190,9 @@ const Register = () => {
 
         <p className="text-center text-sm text-gray-500">
           Already have an account?{" "}
-          <a href="#" className="text-blue-600 hover:underline">
+          <Link to="/login" className="text-blue-600 hover:underline">
             Sign in
-          </a>
+          </Link>
         </p>
       </form>
     </div>

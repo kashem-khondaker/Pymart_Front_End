@@ -35,13 +35,14 @@ const Profile = () => {
   const onSubmit = async (data) => {
     try {
       const profilePayload = {
+        email: data.email,  
         first_name: data.first_name,
         last_name: data.last_name,
         address: data.address,
         phone: data.phone,
       };
 
-      console.log(profilePayload);
+      console.log("console.lgo profile payload : ", profilePayload);
       await updateUserProfile(profilePayload);
       alert("Profile updated successfully");
 
@@ -64,10 +65,10 @@ const Profile = () => {
   };
 
   return (
-    <div className="card w-full max-w-2xl bg-base-100 shadow-xl">
+    <div className="w-full max-w-3xl mx-auto bg-white border-1 border-gray-200 shadow-sm rounded-2xl p-8 space-y-6">
       <div className="card-body">
         {errorMsg && <ErrorAlart error={errorMsg} />}
-        <h2 className="card-title text-2xl m-4">Profile</h2>
+        <h2 className="text-3xl font-semibold text-center mb-6">My Profile</h2>
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <ProfileForm
