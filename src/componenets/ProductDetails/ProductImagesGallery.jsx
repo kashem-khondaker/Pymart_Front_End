@@ -40,15 +40,8 @@ const ProductImagesGallery = ({ images, ProductName }) => {
           </SwiperSlide>
         ))}
       </Swiper>
-      <p>this is for multiline commit </p>
-      <p>
-        feat: implement image gallery carousel for product detail page 
-        
-        Added a carousel for product images with left and right navigation. The carousel
-        is fully responsive and shows images dynamically.
-        
-        Reviewed-by: Md. Kashem
-      </p>
+
+      <div>This is a div </div>
     </div>
   );
 };
