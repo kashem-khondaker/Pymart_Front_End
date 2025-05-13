@@ -1,5 +1,6 @@
 import React from "react";
 import ProductImagesGallery from "../componenets/ProductDetails/ProductImagesGallery";
+import AddToCart from "../componenets/ProductDetails/AddToCart";
 
 const ProductDetail = () => {
   const Product = {
@@ -7,7 +8,7 @@ const ProductDetail = () => {
     name: "Man",
     description: "T-shirt",
     price: 120.0,
-    stock: 300,
+    stock: 10,
     category: 1,
     price_with_tax: 132.0,
     images: [
@@ -24,11 +25,16 @@ const ProductDetail = () => {
     ],
   };
   return (
-    <div>
-      <ProductImagesGallery
-        images={Product.images}
-        ProductName={Product.name}
-      />
+    <div className="w-3/4 mx-auto px-4 py-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+        <ProductImagesGallery
+          images={Product.images}
+          ProductName={Product.name}
+        />
+        <div className="mt-auto">
+          <AddToCart product={Product}/>
+        </div>
+      </div>
     </div>
   );
 };

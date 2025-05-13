@@ -40,8 +40,6 @@ const ProductImagesGallery = ({ images, ProductName }) => {
           </SwiperSlide>
         ))}
       </Swiper>
-
-      <div>This is a div </div>
     </div>
   );
 };
