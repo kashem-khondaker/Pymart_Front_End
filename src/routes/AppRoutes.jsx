@@ -34,7 +34,7 @@ const AppRoutes = () => {
           path="/password/reset/confirm/:uid/:token"
           element={<ResendPasswordActivation />}
         />
-        <Route path="shop/:id" element={<ProductDetail />} />
+        <Route path="shop/:productId" element={<ProductDetail />} />
       </Route>
 
       {/* Private routes */}

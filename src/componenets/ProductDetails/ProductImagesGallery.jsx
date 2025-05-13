@@ -21,22 +21,24 @@ const ProductImagesGallery = ({ images, ProductName }) => {
         ];
   console.log(displayImages);
   return (
-    <div className="rounded-lg border overflow-hidden">
+    <div className="rounded-lg border border-gray-300 overflow-hidden">
       <Swiper
         modules={[Navigation, Thumbs]}
         navigation={true}
         thumbs={{
           swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null,
         }}
-        className="product-main-slider relative "
+        className="product-main-slider relative"
       >
         {displayImages.map((imageObj, index) => (
           <SwiperSlide key={index}>
-            <img
-              src={imageObj.image}
-              alt={ProductName}
-              className="w-full h-auto object-cover"
-            />
+            <div className="aspect-square bg-base-100">
+              <img
+                src={imageObj.image}
+                alt={ProductName}
+                className="w-full h-full object-cover"
+              />
+            </div>
           </SwiperSlide>
         ))}
       </Swiper>
