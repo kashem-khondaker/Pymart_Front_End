@@ -102,15 +102,6 @@ const ProductDetail = () => {
           </div>
         </div>
       </div>
-      {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
-        <ProductImagesGallery
-          images={product.images}
-          ProductName={product.name}
-        />
-        <div className="mt-auto">
-          <AddToCart product={Product} />
-        </div>
-      </div> */}
     </div>
   );
 };

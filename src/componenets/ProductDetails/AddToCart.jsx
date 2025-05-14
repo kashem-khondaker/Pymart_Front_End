@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { FaShoppingCart, FaMinus, FaPlus, FaCheck } from "react-icons/fa";
+import useCartContext from "../../hooks/useCartContext";
 
 const AddToCart = ({ product }) => {
   const [quantity, setQuantity] = useState(1);
   const [isAdding, setIsAdding] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
+  const { AddCartItems } = useCartContext();
 
   const increaseQuantity = () => {
     if (quantity < product.stock) {
@@ -17,17 +19,22 @@ const AddToCart = ({ product }) => {
     }
   };
 
-  const addToCart = () => {
-    //Simulate API call
-    setIsAdding(true);
-    setTimeout(() => {
+  const addToCart = async () => {
+    try {
+      setIsAdding(true);
+      const response =  await AddCartItems(product.id, quantity);
+      console.log(response);
       setIsAdding(false);
-      setIsAdded(true);
-
+      setIsAdded(true)
       setTimeout(() => {
-        setIsAdded(false);
-      }, 3000);
-    }, 2000);
+        setIsAdded(false)
+      },500)
+
+    } catch (error) {
+      console.log(error);
+      setIsAdding(false);
+      setIsAdded(false);
+    }
   };
 
   return (
@@ -63,9 +70,8 @@ const AddToCart = ({ product }) => {
       >
         {isAdding ? (
           <span className="flex items-center justify-center">
-            <span className="loading loading-spinner loading-sm mr-2">
-            </span>
-              Adding ...
+            <span className="loading loading-spinner loading-sm mr-2"></span>
+            Adding ...
           </span>
         ) : isAdded ? (
           <span className="flex items-center">
