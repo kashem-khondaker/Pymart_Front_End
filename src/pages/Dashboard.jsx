@@ -1,7 +1,5 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { FiPackage, FiShoppingCart, FiStar, FiUsers } from "react-icons/fi";
-import Sidebar from "../componenets/DashboardCom/Sidebar";
-import Navbar from "../componenets/DashboardCom/Navbar";
 import StartCard from "../componenets/DashboardCom/StartCard";
 import Order from "../componenets/DashboardCom/Order";
 

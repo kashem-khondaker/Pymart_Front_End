@@ -4,17 +4,21 @@ const authApiClient = axios.create({
   baseURL: "https://phimart-shop.vercel.app/api/v1",
 });
 
-export default authApiClient;
-
-axios.interceptors.request.use(
+// Interceptor শুধু authApiClient এর উপর apply করা হলো
+authApiClient.interceptors.request.use(
   (config) => {
-    const token = JSON.parse(localStorage.getItem("authTokens")).access
-    if (token) {
-        config.headers.Authorization = `JWT ${token}`
+    const tokens = localStorage.getItem("authTokens");
+    if (tokens) {
+      const token = JSON.parse(tokens).access;
+      if (token) {
+        config.headers.Authorization = `JWT ${token}`;
+      }
     }
-    return config
+    return config;
   },
   (error) => {
     return Promise.reject(error);
   }
 );
+
+export default authApiClient;
