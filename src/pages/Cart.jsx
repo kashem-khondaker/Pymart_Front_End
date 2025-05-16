@@ -1,16 +1,47 @@
-import React, { useEffect } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import useCartContext from "../hooks/useCartContext";
+import CartItemList from "../componenets/Cart/CartItemList";
 
 const Cart = () => {
-  const { cart, createOrGetCart } = useCartContext();
+  const { cart, loading, createOrGetCart, updateCartItemQuantity } =
+    useCartContext();
+  // console.log(cart.items.product)
+  const [localCart, setLocalCart] = useState(cart);
+
   useEffect(() => {
-    createOrGetCart();
-    console.log("create or get ,")
-  }, [createOrGetCart]);
-  // console.log(cart);
+    if (!cart && !loading) createOrGetCart();
+  }, [createOrGetCart, cart, loading]);
+
+  useEffect(() => {
+    setLocalCart(cart);
+  }, [cart]);
+
+  const handleUpdateCartItemQuantity = async (itemId, newQuantity) => {
+    setLocalCart((prevLocalCart) => ({
+      ...prevLocalCart,
+      items: prevLocalCart.items.map((item) =>
+        item.id === itemId ? { ...item, quantity: newQuantity } : item
+      ),
+    }));
+    try {
+      await updateCartItemQuantity(itemId, newQuantity);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  if (loading || !localCart) return <p>Loading...</p>;
+  // if () return <p>Loading.</p>
   return (
-    <div>
-      This is cart page .<p>{JSON.stringify(cart)}</p>
+    <div className="flex justify-between">
+      <div>
+        <Suspense fallback={<p>Loading...</p>}>
+          <CartItemList
+            items={localCart.items}
+            handleCartItemQuantity={handleUpdateCartItemQuantity}
+          />
+        </Suspense>
+      </div>
     </div>
   );
 };

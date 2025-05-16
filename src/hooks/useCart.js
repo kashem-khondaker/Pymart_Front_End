@@ -1,4 +1,4 @@
-import  { useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 import authApiClient from "../services/auth-api-client";
 
 const useCart = () => {
@@ -11,13 +11,13 @@ const useCart = () => {
     const id = localStorage.getItem("cartId");
     return id ? id : null;
   });
+  const [loading, setLoading] = useState(false);
 
   // create a new cart
-  const createOrGetCart = useCallback(async() => {
+  const createOrGetCart = useCallback(async () => {
+    setLoading(true);
     try {
-      const response = await authApiClient.post(
-        "/carts/"
-      );
+      const response = await authApiClient.post("/carts/", {});
       setCart(response.data);
       if (!cartId) {
         setCartId(response.data.id);
@@ -25,33 +25,60 @@ const useCart = () => {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
-  },[cartId]);
+  }, [cartId]);
 
   // Add Items
-  const AddCartItems = useCallback(async(product_id, quantity) => {
-    if (!cartId) await createOrGetCart();
-    try {
-      console.log(product_id , quantity);
-      const response = await authApiClient.post(
-        `/carts/${cartId}/items/`,
-        {
+  const AddCartItems = useCallback(
+    async (product_id, quantity) => {
+      setLoading(true);
+      if (!cartId) await createOrGetCart();
+      try {
+        console.log(product_id, quantity);
+        const response = await authApiClient.post(`/carts/${cartId}/items/`, {
           product_id,
           quantity,
-        }
-      );
-      console.log("product added to cart");
-      return response.data;
-    } catch (error) {
-      console.log("Add to Cart Item :", error);
-    }
-  },[cartId , createOrGetCart])
+        });
+        console.log("product added to cart");
+        return response.data;
+      } catch (error) {
+        console.log("Add to Cart Item :", error);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [cartId, createOrGetCart]
+  );
+
+  // Update Item quantity
+  const updateCartItemQuantity = useCallback(
+    async (itemId, quantity) => {
+      console.log(itemId , cartId)
+      try {
+        console.log("something ... ")
+        await authApiClient.patch(`/carts/${cartId}/items/${itemId}/`, {
+          quantity,
+        });
+        
+      } catch (error) {
+        console.log("Error updating cart items", error);
+      } 
+    },
+    [cartId]
+  );
+
+  // console.log(cart);
+  // console.log(cartId);
 
   return {
     cart,
     cartId,
+    loading,
     createOrGetCart,
     AddCartItems,
+    updateCartItemQuantity,
   };
 };
 
