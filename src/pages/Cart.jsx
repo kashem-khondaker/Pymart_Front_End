@@ -3,7 +3,7 @@ import useCartContext from "../hooks/useCartContext";
 import CartItemList from "../componenets/Cart/CartItemList";
 
 const Cart = () => {
-  const { cart, loading, createOrGetCart, updateCartItemQuantity } =
+  const { cart, loading, createOrGetCart, updateCartItemQuantity,deleteCartItem } =
     useCartContext();
   // console.log(cart.items.product)
   const [localCart, setLocalCart] = useState(cart);
@@ -30,6 +30,19 @@ const Cart = () => {
     }
   };
 
+  const handleRemoveItem = async (itemId) => {
+    setLocalCart((prevLocalCart) => ({
+      ...prevLocalCart,
+      items: prevLocalCart.items.filter((item) => item.id != itemId),
+    }));
+
+    try {
+      deleteCartItem(itemId)
+    } catch (error) {
+      console.log(error)
+    }
+  };
+
   if (loading || !localCart) return <p>Loading...</p>;
   // if () return <p>Loading.</p>
   return (
@@ -39,6 +52,7 @@ const Cart = () => {
           <CartItemList
             items={localCart.items}
             handleCartItemQuantity={handleUpdateCartItemQuantity}
+            handleRemoveCartItem={handleRemoveItem}
           />
         </Suspense>
       </div>

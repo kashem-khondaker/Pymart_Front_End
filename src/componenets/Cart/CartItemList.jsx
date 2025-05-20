@@ -1,6 +1,10 @@
 import { FaRegTrashAlt } from "react-icons/fa";
 
-const CartItemList = ({ items, handleCartItemQuantity, handleRemoveItem }) => {
+const CartItemList = ({
+  items,
+  handleCartItemQuantity,
+  handleRemoveCartItem,
+}) => {
   if (items?.length === 0) {
     return (
       <div className="py-6 text-center text-gray-500">Your cart is empty</div>
@@ -33,7 +37,7 @@ const CartItemList = ({ items, handleCartItemQuantity, handleRemoveItem }) => {
                       onClick={() =>
                         handleCartItemQuantity(
                           item.id,
-                          Math.max(1, item.quantity - 1)
+                          Math.max(1, Math.max(1, item.quantity - 1))
                         )
                       }
                       className="btn btn-xs btn-outline join-item"
@@ -64,7 +68,7 @@ const CartItemList = ({ items, handleCartItemQuantity, handleRemoveItem }) => {
                   <button
                     className="btn btn-ghost btn-xs btn-circle"
                     aria-label={`Remove ${item.name} from cart`}
-                    onClick={() => handleRemoveItem(item.id)}
+                    onClick={() => handleRemoveCartItem(item.id)}
                   >
                     <FaRegTrashAlt className="h-4 w-4" />
                   </button>
