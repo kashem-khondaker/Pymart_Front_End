@@ -86,8 +86,11 @@ const useAuth = () => {
       hasFetched.current = false; // ✅ reset flag when new login happens
       await fetchUserProfile();
       hasFetched.current = true;
+      return {success:true}
     } catch (error) {
-      return errorHandler(error);
+      console.log(error);
+      errorHandler(error);
+      return {success:false};
     }
   };
 
@@ -208,6 +211,7 @@ const useAuth = () => {
     setAuthTokens(null);
     setUser(null);
     localStorage.removeItem("authTokens");
+    localStorage.removeItem("cartId");
   };
 
   return {

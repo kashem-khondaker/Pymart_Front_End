@@ -1,6 +1,4 @@
-import React from "react";
-
-const StartCard = ({icon: Icon , title , value}) => {
+const StatCard = ({ icon: Icon, title, value }) => {
   return (
     <div className="card bg-base-100 shadow-sm">
       <div className="card-body p-4">
@@ -14,4 +12,4 @@ const StartCard = ({icon: Icon , title , value}) => {
   );
 };
 
-export default StartCard;
+export default StatCard;

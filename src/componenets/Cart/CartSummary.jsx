@@ -1,33 +1,26 @@
-import React from "react";
 import authApiClient from "../../services/auth-api-client";
 
-const CartSummary = ({totalPrice , itemCount , cartId}) => {
+const CartSummary = ({ totalPrice, itemCount, cartId }) => {
   const shipping = totalPrice < 100 ? 0 : 10;
-  const tax = totalPrice * 0.10 ;
-  const orderTotal = totalPrice + shipping + tax
+  const tax = totalPrice * 0.1;
+  const orderTotal = totalPrice + shipping + tax;
 
-  const deleteCart = async() => {
-    try {
-      const response = await authApiClient.delete(`/carts/${cartId}/`)
-      console.log(response);
-    } catch (error) {
-      console.log(error);
-    }
+  const deleteCart = () => {
+    localStorage.removeItem("cartId");
   }
 
-  const createOrder = async() => {
+  const createOrder = async () => {
     try {
-      const order = await authApiClient.post(`/orders/`,{cart_id: cartId})
-      console.log(order)
+      const order = await authApiClient.post(`/orders/`, { cart_id: cartId });
+      console.log(order);
       if (order?.status === 201) {
-        await deleteCart();
-        alert("Order Placed Successfully .")
+        deleteCart();
+        alert("Order Placed Successfully .");
       }
     } catch (error) {
       console.log(error);
     }
   };
-
 
   return (
     <div className="card bg-base-100 shadow-xl">
@@ -43,7 +36,7 @@ const CartSummary = ({totalPrice , itemCount , cartId}) => {
           </div>
           <div className="flex justify-between">
             <span className="text-gray-500">Shipping</span>
-            <span>${shipping != 10 ? "Free" : 10 }</span>
+            <span>${shipping != 10 ? "Free" : 10}</span>
           </div>
           <div className="flex justify-between">
             <span className="text-gray-500">Estimated Tax</span>
@@ -57,7 +50,11 @@ const CartSummary = ({totalPrice , itemCount , cartId}) => {
           </div>
         </div>
         <div className="card-actions justify-end mt-4">
-          <button className="btn btn-primary w-full" onClick={createOrder}>
+          <button
+            className="btn btn-primary w-full"
+            onClick={createOrder}
+            disabled={itemCount == 0}
+          >
             Proceed to Checkout
           </button>
         </div>
