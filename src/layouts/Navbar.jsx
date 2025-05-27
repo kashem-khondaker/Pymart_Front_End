@@ -33,7 +33,7 @@ const Navbar = () => {
             className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
           >
             <li>
-              <a>Item 1</a>
+              <Link to={ "/dashboard" } > <a>Dashboard</a> </Link>
             </li>
             <li>
               <a>Parent</a>
@@ -56,7 +56,7 @@ const Navbar = () => {
       <div className="navbar-center hidden lg:flex ">
         <ul className="menu menu-horizontal px-1 ">
           <li>
-            <a>Item 1</a>
+            <Link to={ "/dashboard" } > <a>Dashboard</a> </Link>
           </li>
           <li>
             <details>

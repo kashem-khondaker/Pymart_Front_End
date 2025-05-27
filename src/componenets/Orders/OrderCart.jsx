@@ -1,10 +1,8 @@
 import useAuthContext from "../../hooks/useAuthContext";
 import OrderTable from "./OrderTable";
 
-const OrderCart = ({ order }) => {
-
-    const {user} = useAuthContext();
-    console.log(user.is_staff);
+const OrderCart = ({ order, onCancel }) => {
+  const { user } = useAuthContext();
 
   return (
     <div className="bg-white rounded-lg shadow-lg mb-8 overflow-hidden">
@@ -21,8 +19,13 @@ const OrderCart = ({ order }) => {
           >
             {order.status}
           </span>
-          {order.status !== "Deliverd" && (
-            <span className="text-blue-700 hover:underline">Cancel</span>
+          {order.status !== "Deliverd" && order.status !== "Canceled" && (
+            <button
+              onClick={() => onCancel(order.id)}
+              className="text-blue-700 hover:underline"
+            >
+              Cancel
+            </button>
           )}
         </div>
       </div>
@@ -46,7 +49,7 @@ const OrderCart = ({ order }) => {
             <span>${order.total_price.toFixed(2)}</span>
           </div>
         </div>
-        {(!user.is_staff &&  order.status === "Not Paid") && (
+        {!user.is_staff && order.status === "Not Paid" && (
           <button className="mt-4 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors">
             Pay Now
           </button>
