@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const authApiClient = axios.create({
-  baseURL: "https://pymart-front-end.vercel.app/",
+  baseURL: "http://127.0.0.1:8000/api/v1",
 });
 
 // Interceptor শুধু authApiClient এর উপর apply করা হলো
