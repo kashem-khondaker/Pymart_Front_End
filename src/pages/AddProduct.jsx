@@ -13,6 +13,7 @@ const AddProduct = () => {
   const [categories, setCategories] = useState([]);
   const [productId, setProductId] = useState(null);
   const [previewImages, setPreviewImages] = useState([]);
+  const [images , setImages] = useState([]);
 
   useEffect(() => {
     apiClient.get("/categories/").then((response) => {
@@ -55,9 +56,27 @@ const AddProduct = () => {
   //handleImageChange
   const handleImageChange = (event) => {
     const files = Array.from(event.target.files);
-    // console.log(files);
+    console.log(files);
+    setImages(files);
     setPreviewImages(files.map((file) => URL.createObjectURL(file)));
   };
+
+  // handleUpload
+  const handleUpload = async() => {
+    if (!images.length) return alert("Please select images .")
+
+    try {
+        for (const image of images) {
+            const formData = new FormData();
+            formData.append("image" , image);
+            console.log(formData);
+            await authApiClient.post(`/products/61/images/`,formData);
+        }
+        alert("Images uploaded successfully .")
+    } catch (error) {
+        console.error("Upload Images Error:", error.response?.data || error.message);
+    }
+  }
 
   return (
     <div className="max-w-2xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg ">
@@ -169,7 +188,9 @@ const AddProduct = () => {
             </div>
           )}
 
-          <button className="btn btn-primary w-full mt-2">
+          <button
+          onClick={handleUpload} 
+          className="btn btn-primary w-full mt-2">
             {" "}
             Upload Images
           </button>
