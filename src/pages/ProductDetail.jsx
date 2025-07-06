@@ -4,6 +4,7 @@ import { Link, useParams } from "react-router";
 import { FaArrowLeft } from "react-icons/fa";
 import { Suspense, useEffect, useState } from "react";
 import apiClient from "../services/api-client";
+import ReviewSection from "../componenets/Reviews/ReviewSection";
 
 const ProductDetail = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -102,6 +103,7 @@ const ProductDetail = () => {
           </div>
         </div>
       </div>
+      <ReviewSection />
     </div>
   );
 };
