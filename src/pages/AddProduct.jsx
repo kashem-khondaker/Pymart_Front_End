@@ -13,7 +13,8 @@ const AddProduct = () => {
   const [categories, setCategories] = useState([]);
   const [productId, setProductId] = useState(null);
   const [previewImages, setPreviewImages] = useState([]);
-  const [images , setImages] = useState([]);
+  const [images, setImages] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     apiClient.get("/categories/").then((response) => {
@@ -53,7 +54,7 @@ const AddProduct = () => {
     }
   };
 
-  //handleImageChange
+  //handle Image Change
   const handleImageChange = (event) => {
     const files = Array.from(event.target.files);
     console.log(files);
@@ -61,27 +62,31 @@ const AddProduct = () => {
     setPreviewImages(files.map((file) => URL.createObjectURL(file)));
   };
 
-  // handleUpload
-  const handleUpload = async() => {
-    if (!images.length) return alert("Please select images .")
-
+  // handle Upload
+  const handleUpload = async () => {
+    if (!images.length) return alert("Please select images .");
+    setLoading(true);
     try {
-        for (const image of images) {
-            const formData = new FormData();
-            formData.append("image" , image);
-            console.log(formData);
-            await authApiClient.post(`/products/61/images/`,formData);
-        }
-        alert("Images uploaded successfully .")
+      for (const image of images) {
+        const formData = new FormData();
+        formData.append("image", image);
+        console.log(formData);
+        await authApiClient.post(`/products/${productId}/images/`, formData);
+        setLoading(false);
+      }
+      alert("Images uploaded successfully .");
     } catch (error) {
-        console.error("Upload Images Error:", error.response?.data || error.message);
+      console.error(
+        "Upload Images Error:",
+        error.response?.data || error.message
+      );
     }
-  }
+  };
 
   return (
     <div className="max-w-2xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg ">
       <h2 className="text-2xl font-semibold mb-4">Add New Product </h2>
-      {productId ? (
+      {!productId ? (
         <form onSubmit={handleSubmit(handleProductAdd)} className="space-y-4">
           <div>
             <label className="block text-sm font-medium">Product name</label>
@@ -189,10 +194,11 @@ const AddProduct = () => {
           )}
 
           <button
-          onClick={handleUpload} 
-          className="btn btn-primary w-full mt-2">
-            {" "}
-            Upload Images
+            onClick={handleUpload}
+            className="btn btn-primary w-full mt-2"
+            disabled={loading}
+          >
+            {loading ? "Uploading images" : " Upload Images "}
           </button>
         </div>
       )}
