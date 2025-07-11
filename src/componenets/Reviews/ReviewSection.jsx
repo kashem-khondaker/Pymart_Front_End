@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import ReviewList from "./ReviewList";
 import apiClient from "../../services/api-client";
 import { MdRateReview } from "react-icons/md";
+import useAuthContext from "../../hooks/useAuthContext";
 
 const ReviewSection = () => {
   const { productId } = useParams();
@@ -12,6 +13,9 @@ const ReviewSection = () => {
   const [reviews, setReviews] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
+  const { user } = useAuthContext();
+  const [editReview, setEditReview] = useState({ ratings: 0, comment: "" });
+  const [editingId , setEditingId] = useState(null);
 
   const fetchReviews = async () => {
     setIsLoading(true);
@@ -99,7 +103,14 @@ const ReviewSection = () => {
           </p>
         </div>
       ) : (
-        <ReviewList reviews={reviews} />
+        <ReviewList
+          reviews={reviews}
+          user={user}
+          editReview={editReview}
+          setEditReview={setEditReview}
+          editingId={editingId}
+          setEditingId={setEditingId}
+        />
       )}
     </div>
   );
