@@ -1,15 +1,33 @@
 import { useParams } from "react-router";
 import ReviewForm from "./ReviewForm";
-import StarRating from "./StarRating";
 import authApiClient from "../../services/auth-api-client";
 import { useEffect, useState } from "react";
 import ReviewList from "./ReviewList";
+import apiClient from "../../services/api-client";
+import { MdRateReview } from "react-icons/md";
 
 const ReviewSection = () => {
   const { productId } = useParams();
   const [userCanReview, setUserCanReview] = useState(false);
+  const [reviews, setReviews] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState(null);
+
+  const fetchReviews = async () => {
+    setIsLoading(true);
+    try {
+      const response = await apiClient.get(`/products/${productId}/reviews/`);
+      console.log(response.data);
+      setReviews(response.data);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const onSubmit = async (data) => {
+    setErrorMessage(null); // clear previous error
     console.log(data);
     try {
       const response = await authApiClient.post(
@@ -17,8 +35,14 @@ const ReviewSection = () => {
         data
       );
       console.log(response.data);
+      fetchReviews();
     } catch (error) {
-      console.log(error);
+      console.log("Review error:", error);
+      if (error.response?.data?.detail) {
+        setErrorMessage(error.response.data.detail);
+      } else {
+        setErrorMessage("Something went wrong while submitting your review.");
+      }
     }
   };
 
@@ -34,12 +58,49 @@ const ReviewSection = () => {
   };
   useEffect(() => {
     checkUserPermission();
+    fetchReviews();
   }, []);
   return (
-    <div>
+    <div className=" pt-15">
       {userCanReview && <ReviewForm onSubmit={onSubmit} />}
-      <ReviewList/>
-      {/* <StarRating/> */}
+      {errorMessage && (
+        <div className="max-w-xl mx-auto mt-4 px-4 py-2 bg-red-100 text-red-700 border border-red-300 rounded-lg text-sm">
+          {errorMessage}
+        </div>
+      )}
+
+      <div className="flex items-center justify-between space-x-3 mb-2 mt-16">
+        <h2 className="text-2xl font-bold text-center text-base-content">
+          Customer Reviews
+        </h2>
+        <div className="badge badge-outline">
+          {reviews.length}{" "}
+          {(reviews.length === 1) | (reviews.length === 0)
+            ? "Review"
+            : "Reviews"}
+        </div>
+      </div>
+
+      <div className="divider"></div>
+      {isLoading ? (
+        <div className="flex justify-center py-8">
+          <span className="loading loading-spinner loading-lg text-primary"></span>
+        </div>
+      ) : reviews.length === 0 ? (
+        <div className="text-center py-12 bg-base-100  max-w-xl mx-auto">
+          <div className="flex justify-center mb-4 text-gray-300">
+            <MdRateReview size={64} />
+          </div>
+          <h3 className="text-2xl font-bold mb-2 text-gray-400">
+            No Reviews Yet
+          </h3>
+          <p className="text-base text-base-content/70">
+            Be the first to share your experience with this product!
+          </p>
+        </div>
+      ) : (
+        <ReviewList reviews={reviews} />
+      )}
     </div>
   );
 };

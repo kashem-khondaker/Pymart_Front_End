@@ -11,7 +11,7 @@ const ReviewForm = ({ onSubmit }) => {
   } = useForm();
   const ratingValue = watch("ratings", 0);
   return (
-    <div className="mt-10">
+    <div className="mt-10 bg-white shadow-md p-5 rounded-2xl">
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="space-y-6 text-gray-800 text-[15px]"
