@@ -12,6 +12,7 @@ const ReviewCart = ({
   isEditing,
   onCancelEdit,
   onSaveEdit,
+  OnDeleteClick,
 }) => {
   return (
     <div className="card bg-base-100 shadow-md hover:shadow-lg transition-shadow border border-base-200 rounded-xl overflow-hidden mt-6">
@@ -41,7 +42,10 @@ const ReviewCart = ({
               >
                 Edit
               </button>
-              <button className="btn btn-sm btn-outline btn-error">
+              <button
+                onClick={OnDeleteClick}
+                className="btn btn-sm btn-outline btn-error"
+              >
                 Delete
               </button>
             </div>

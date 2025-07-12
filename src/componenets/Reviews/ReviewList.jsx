@@ -8,6 +8,7 @@ const ReviewList = ({
   editingId,
   setEditingId,
   handleUpdateReview,
+  handleDeleteReview,
 }) => {
   return (
     <div className="space-y-4">
@@ -28,6 +29,7 @@ const ReviewList = ({
           }}
           onCancelEdit={() => setEditingId(null)}
           onSaveEdit={handleUpdateReview}
+          OnDeleteClick={() => handleDeleteReview(review.id)}
         />
       ))}
     </div>
