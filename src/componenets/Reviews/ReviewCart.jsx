@@ -10,7 +10,8 @@ const ReviewCart = ({
   setEditReview,
   onEditClick,
   isEditing,
-  onCancelEdit
+  onCancelEdit,
+  onSaveEdit,
 }) => {
   return (
     <div className="card bg-base-100 shadow-md hover:shadow-lg transition-shadow border border-base-200 rounded-xl overflow-hidden mt-6">
@@ -59,6 +60,7 @@ const ReviewCart = ({
             editReview={editReview}
             setEditReview={setEditReview}
             onCancelEdit={onCancelEdit}
+            onSave={() => onSaveEdit(review.id)}
           />
         ) : (
           <div className="mt-4">

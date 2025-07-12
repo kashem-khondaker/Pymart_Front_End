@@ -7,6 +7,7 @@ const ReviewList = ({
   setEditReview,
   editingId,
   setEditingId,
+  handleUpdateReview,
 }) => {
   return (
     <div className="space-y-4">
@@ -16,16 +17,17 @@ const ReviewList = ({
           review={review}
           user={user}
           editReview={editReview}
-          isEditing = {editingId===review.id}
+          isEditing={editingId === review.id}
           setEditReview={setEditReview}
           onEditClick={() => {
-            setEditingId(review.id)
+            setEditingId(review.id);
             setEditReview({
               ratings: review.ratings,
               comment: review.comment,
             });
           }}
-          onCancelEdit = {() => setEditingId(null)}
+          onCancelEdit={() => setEditingId(null)}
+          onSaveEdit={handleUpdateReview}
         />
       ))}
     </div>
